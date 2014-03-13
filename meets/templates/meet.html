@@ -1,0 +1,59 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+{% block coltype %}colM{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'meets-list' %}">{% trans 'Booking' %}</a>
+    &rsaquo; {% trans 'View' %}
+    </div>
+{% endblock %}
+
+
+
+{% block content %}
+
+<h1>{{ 'Scheduled Meeting' }}</h1>
+
+<fieldset class="module aligned ">
+
+{% if booking %}
+   <div class="form-row form-group">
+                <label>Book Date:</label>
+                <p>{{ booking.book_date|date:"l, F j, Y" }}</p> 
+   </div>
+   <div class="form-row form-group">
+                <label>Time:</label>
+                <p class='nowrap'>{{ booking.from_time|date:"H:i" }}-{{ booking.to_time|time:"H:i" }}</p>
+   </div>
+    <div class="form-row form-group">
+                <label>Request By:</label>
+                <p>{{ booking.request_by }}</p>
+   </div>
+   <div class="form-row form-group">
+                <label>Purpose For:</label>
+                <p >{{ booking.purpose }}</p>
+   </div>
+   <div class="form-row form-group">
+                <label>Venue:</label>
+                <p>{{ booking.venue.venue_name }} ({{ booking.venue.venue_capacity }})</p>
+   </div>
+   <div class="form-row form-group">
+                <label>Book Status:</label>
+                <p>{{ booking.book_status }}</p>
+   </div>
+{% endif %}
+   
+</fieldset>  
+   <div class="submit-row form-group">
+                         <p class="deletelink-box"><a href="{{ edit }}" class="changelink">Update</a></p>
+
+         &nbsp;       <input id="go_contact" type="button" value="Back" class="btn btn-primary" onClick="history.go(-1)"/>     
+    </div>
+
+
+
+
+
+{% endblock %}

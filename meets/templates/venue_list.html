@@ -1,0 +1,93 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+
+
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "adm/css/changelists.css" %}" />
+{% endblock %}
+
+{% block coltype %}flex{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% block breadcrumbs %}
+ <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    &rsaquo; {% trans 'Venues' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+<h1>Scheduled Venues</h1>
+
+
+<div id="content-main">
+ 
+      
+        <ul class="object-tools">
+            <li>
+               <a href="{% url 'venue-new' %}" class="addlink">Add a New Scheduled Venue</a>
+            </li>
+        </ul>
+
+  
+
+        <div class="module" id="changelist">
+              <div class="actions"> &nbsp;
+              </div>
+
+               <div class="results">
+			<table id="result_list">
+			<thead>
+			<tr>
+
+			<th scope="col" class="column-__str__">
+			   
+			   <div class="text"><span>Venue Name</span></div>
+			   <div class="clear"></div>
+			</th>
+			<th scope="col"  class="column-__str__">
+			   
+			   <div class="text"><span>Venue Capacity</span></div>
+			   <div class="clear"></div>
+			</th>
+                        <th scope="col"  class="column-__str__">
+			   
+			   <div class="text"><span>Venue Details</span></div>
+			   <div class="clear"></div>
+			</th> 
+                       </tr>
+			</thead>
+		        <tbody>
+                      {% for venue in venues %}
+                           <tr class="row{% cycle '1' '2' %}">
+                              <td>{{ venue.venue_name }}</td>
+                              <td>{{ venue.venue_capacity }}</td>
+                              <td> 
+                                   (<a href="{{ venue.get_absolute_url }}">view</a>) 
+                                   (<a href="{% url "venue-edit" code=venue.code %}">edit</a>)  
+                                   (<a href="{% url "venue-delete" code=venue.code %}">delete</a>) 
+                              </td>
+		           </tr>
+                      {% endfor %}
+		      </tbody>
+		      </table>
+		</div>
+
+         
+        </div>
+
+</div>
+
+
+<div class="submit-row form-group">
+                <p class="deletelink-box"><a href="{% url 'venue-new' %}" class="addlink">Add a New Scheduled Venue</a></p>
+               
+            </div>
+
+
+
+{% endblock %}
+
+

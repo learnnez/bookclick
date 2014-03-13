@@ -1,0 +1,40 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'venue-list' %}">{% trans 'Venues' %}</a>
+    &rsaquo; {% trans 'View' %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+<h1>{{ 'Scheduled Venue' }}</h1>
+
+  
+<fieldset class="module aligned ">
+
+{% if venue %}
+   <div class="form-row form-group">
+                <label>Venue Name :</label>
+                <p>{{ venue.venue_name }}</p> 
+   </div>
+    <div class="form-row form-group nowrap">
+                <label>Capacity :</label>
+                <p>{{ venue.venue_capacity }}</p>
+   </div> 
+{% endif %}
+   
+</fieldset>  
+   <div class="submit-row form-group">
+              <p class="deletelink-box"><a href="{{ edit }}" class="changelink">Update</a></p>
+      &nbsp;  <input id="go_contact" type="button" value="Back" class="btn btn-primary" onClick="history.go(-1)"/>     
+    </div>
+
+
+{% endblock %}

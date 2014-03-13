@@ -1,0 +1,124 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}
+
+<script type="text/javascript" src="{% static 'adm/jsi18n/' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/admin/RelatedObjectLookups.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/jquery.init.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/calendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/admin/DateTimeShortcuts.js' %}"></script>
+
+{% endblock %}
+
+
+{% block coltype %}colM{% endblock %}
+{% block bodyclass %}change-form{% endblock %}
+
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+     <a href="{% url 'bookapp-login' %}">{% trans 'Login' %}</a> 
+    &rsaquo; {% trans 'Register' %}
+    </div>
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+
+<h1>Registration</h1>
+
+
+ <form action="{{ action }}" method="post" role="form">
+<fieldset class="module aligned ">
+ <div class="help-block">
+ {% if form.non_field_errors %}
+    <ul class="errorlist">
+      {% for error in form.non_field_errors %}
+        <li>  {{ error }}  </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+
+     
+         {% for field in form.visible_fields %}
+          <div class="form-row field-{{ field.html_name }}{% if field.errors %} has-error{% endif %}">
+            <div>
+                <span class='nowrap' >{{ field.label_tag }} </span>
+                {{ field }} 
+                 
+                  {% if field.html_name == 'captcha' %}
+                  <a href="{% url 'bookapp-register' %}">{% trans 'Refresh' %}</a> 
+                     {% comment %}
+                    <button class='js-captcha-refresh' value="Refresh"></button>
+                    {% endcomment %}
+                  {% endif %}
+
+                <div class="text-muted pull-right">
+                    <small>{{ field.help_text }}</small>
+                </div>
+                <div class="help-block">
+                    {{ field.errors }}
+                </div>
+            </div>
+          </div>
+          
+          
+           
+   
+         {% endfor %}
+           
+         
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+           
+            {% comment %} <input id="id_user" type="hidden" name="user" value={{user.id}}>{% endcomment %}
+                          
+            {% csrf_token %}
+           
+ </fieldset>      
+
+            <div class="submit-row form-group">
+                <!-- <input id="go_contact" type="button" value="Back" class="btn btn-primary" onClick="history.go(-1)"/> -->
+                <input id="save_contact" type="submit" value="Save" class="btn btn-primary" />
+                
+            </div>
+            
+
+ </form>
+
+<script type="text/javascript">
+(function($) {
+    var field;
+})(django.jQuery);
+
+</script>
+
+{% comment %}
+<script type="text/javascript">
+$('.js-captcha-refresh').click(function(){
+    $form = $(this).parents('form');
+
+    $.getJSON($(this).data('url'), {}, function(json) {
+        // This your should update captcha image src and captcha hidden input
+    });
+
+    return false;
+});
+</script>
+{% endcomment %}
+
+
+
+
+
+
+
+{% endblock %}

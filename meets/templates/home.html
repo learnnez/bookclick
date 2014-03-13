@@ -1,0 +1,51 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+
+
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "adm/css/dashboard.css" %}" />{% endblock %}
+{% block coltype %}colMS{% endblock %}
+
+
+{% block bodyclass %}dashboard{% endblock %}
+
+
+{% block breadcrumbs %}
+ <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+<div id="content-main">
+
+       <div class="module">
+        <table>
+        <caption>
+            <a href="{% url 'home-view' %}" class="section">
+                Meeting
+            </a>
+        </caption>
+        
+            {% if user.is_superuser %}   
+           <tr class="model-group">
+                <th scope="row"><a href="{% url 'venue-list' %}">Venue</a></th>
+                <td><a href="{% url 'venue-new' %}" class="addlink">Add</a></td>
+                <td><a href="{% url 'venue-list' %}" class="changelink">Change</a></td>
+            </tr>
+            {% endif %}
+            <tr class="model-user">
+                <th scope="row"><a href="{% url 'meets-list' %}">Booking</a></th>
+                <td><a href="{% url 'meets-new' %}" class="addlink">Add</a></td>
+                <td><a href="{% url 'meets-list' %}" class="changelink">Change</a></td>
+            </tr>
+        
+        </table>
+        </div>
+
+</div>
+
+{% endblock %}
+
+

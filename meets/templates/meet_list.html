@@ -1,0 +1,139 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+{% load event_tags %}
+
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "adm/css/changelists.css" %}" />
+{% endblock %}
+
+{% block coltype %}flex{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+
+
+{% block breadcrumbs %}
+ <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    &rsaquo; {% trans 'Booking' %}
+    </div>
+{% endblock %}
+
+{% block content %}
+<h1>Scheduled Meetings</h1>
+
+
+<div id="content-main">
+    
+  
+        <ul class="object-tools">
+            <li>
+               <a href="{% url 'meets-new' %}" class="addlink">Add a New Scheduled Meeting</a>
+            </li>
+        </ul>
+
+  
+
+         
+        <div class="module" id="changelist">
+        
+                <div class="actions">
+                   <label>
+                   {% if month == 1 %}
+			<a href= "{{ prevMonthprevYear }}">&lsaquo;Previous&rsaquo;</a> 
+		   {% elif month == 12 %}
+			<a href= "{{ prevMonthYear }}">&lsaquo;Previous&rsaquo;</a> 
+		   {% else %}
+			<a href= "{{ prevMonthYear }}">&lsaquo;Previous&rsaquo;</a> 
+		   {% endif %}
+		    <a href= "{% url 'meets-list' %}">&lsaquo;Current Month&rsaquo;</a> 
+		   {% if month == 1 %}
+			<a href= "{{ nextMonthYear }}">&lsaquo;Next&rsaquo;</a>
+		   {% elif month == 12 %}
+			<a href= "{{ nextMonthnextYear }}">&lsaquo;Next&rsaquo;</a>
+		   {% else %}
+			<a href= "{{ nextMonthYear }}">&lsaquo;Next&rsaquo;</a>
+		   {% endif %}
+                   </label>
+                </div> 
+
+		<div id="calendar">
+		   {% event_calendar year month events_list %}
+		</div>
+                
+
+               {% if bookings %} 
+               <div class="actions"> &nbsp;
+               </div>
+               <div class="results">
+			<table id="result_list">
+			<thead>
+			<tr>
+
+			<th scope="col" class="column-__str__">
+			   
+			   <div class="text"><span>Book Date</span></div>
+			   <div class="clear"></div>
+			</th>
+			<th scope="col"  class="column-__str__">
+			   
+			   <div class="text"><span>Time</span></div>
+			   <div class="clear"></div>
+			</th>
+                        <th scope="col"  class="column-__str__">
+			   
+			   <div class="text"><span>Venue</span></div>
+			   <div class="clear"></div>
+			</th> 
+                        <th scope="col"  class="column-__str__">
+			   
+			   <div class="text"><span>Book Status</span></div>
+			   <div class="clear"></div>
+			</th>
+                         <th scope="col"  class="column-__str__">
+			   
+			   <div class="text"><span>Book Details</span></div>
+			   <div class="clear"></div>
+			</th>    
+			</tr>
+			</thead>
+		        <tbody>
+                      {% for booking in bookings %}
+                           <tr class="row{% cycle '1' '2' %}">
+		             <td>{{ booking.book_date|date:"c" }}</td>
+		             <td>{{ booking.from_time|date:"H:i" }}-{{ booking.to_time|time:"H:i" }}</td>
+                             <td>{{ booking.venue.venue_name }} ({{ booking.venue.venue_capacity }})</td>
+                             <td>{{ booking.book_status }}</td>
+                             <td>
+			       {% if user = booking.user and booking.book_status = 'Pending' %}
+				    (<a href="{{ booking.get_absolute_url }}">view</a>) 
+				    (<a href="{% url "meets-edit" pk=booking.id %}">update</a>) 
+				    (<a href="{% url "meets-delete" pk=booking.id %}">delete</a>) 
+			       {% elif user = booking.user and booking.book_status = 'Accepted' %}
+				    (<a href="{{ booking.get_absolute_url }}">view</a>) 
+			       {% elif user = booking.user and booking.book_status = 'Cancelled' %}
+				    (<a href="{{ booking.get_absolute_url }}">view</a>) 
+			       {% endif %}
+                             </td> 
+		           </tr>
+                      {% endfor %}
+		        
+		        
+			</tbody>
+			</table>
+		</div>
+                {% endif %}
+         
+        </div>
+        
+</div>
+ 
+           <div class="submit-row form-group">
+                <p class="deletelink-box"><a href="{% url 'meets-new' %}" class="addlink">Add a New Scheduled Meeting</a></p>
+                 &nbsp;  <div class="clear"></div>
+            </div>
+
+
+{% endblock %}
+
+

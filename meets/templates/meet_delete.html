@@ -1,0 +1,34 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "adm/css/dashboard.css" %}" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}
+ <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'meets-list' %}">{% trans 'Booking' %}</a>
+    &rsaquo; {% trans 'Delete' %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+{% if booking %}
+<h1>Delete Scheduled Meeting</h1>
+
+<p>Are you sure you want to delete the scheduled meeting {{ booking }} ?</p>
+
+<form action="{{ action }}" method="POST">
+  {% csrf_token %}
+
+  <input type="submit" value="Yes, delete." />
+  <a href="{% url 'meets-list' %}">No, cancel.</a>
+</form>
+{% endif %}
+
+{% endblock %}

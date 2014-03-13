@@ -1,0 +1,95 @@
+{% extends "adm/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}
+
+<script type="text/javascript" src="{% static 'adm/jsi18n/' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/core.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/admin/RelatedObjectLookups.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/jquery.init.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/actions.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/calendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'adm/js/admin/DateTimeShortcuts.js' %}"></script>
+
+{% endblock %}
+
+
+
+
+
+{% block coltype %}colM{% endblock %}
+
+
+{% block bodyclass %}change-form{% endblock %}
+
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'home-view' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'venue-list' %}">{% trans 'Venues' %}</a>
+    &rsaquo; {% trans 'New' %}
+    </div>
+{% endblock %}
+
+
+{% block content %}
+
+
+
+
+<h1>Add a New Scheduled Venue</h1>
+
+ <form action="{{ action }}" method="post" role="form">
+<fieldset class="module aligned ">
+ <div class="help-block">
+ {% if form.non_field_errors %}
+    <ul class="errorlist">
+      {% for error in form.non_field_errors %}
+        <li>  {{ error }}  </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  </div>
+
+     
+         {% for field in form.visible_fields %}
+          <div class="form-row field-{{ field.html_name }}{% if field.errors %} has-error{% endif %}">
+            <div>
+                {{ field.label_tag }}
+                {{ field }}
+                 
+                <div class="text-muted pull-right">
+                    <small>{{ field.help_text }}</small>
+                </div>
+                <div class="help-block">
+                    {{ field.errors }}
+                </div>
+            </div>
+          </div>  
+         {% endfor %}
+              
+         
+            {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+            {% endfor %}
+           
+            {% csrf_token %}
+           
+ </fieldset>      
+
+            <div class="submit-row form-group">
+                 <input id="go_contact" type="button" value="Back" class="btn btn-primary" onClick="history.go(-1)"/>
+                <input id="save_contact" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            
+
+</script>
+
+
+</form>
+
+
+
+
+{% endblock %}
